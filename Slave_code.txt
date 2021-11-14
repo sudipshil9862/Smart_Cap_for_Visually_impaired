@@ -1,0 +1,115 @@
+const int buzz1 = 5;
+const int buzz2 = 6;
+const int buzz3 = 7;
+const int buzz4 = 8;
+void setup() 
+{
+  pinMode(buzz1, OUTPUT);
+  pinMode(buzz2, OUTPUT);
+  pinMode(buzz3, OUTPUT);
+  pinMode(buzz4, OUTPUT);
+  Serial.begin(38400); // Default communication rate of the Bluetooth module
+}
+
+uint32_t comboData;
+uint8_t cm1, cm2, cm3, cm4;
+uint8_t mask = 255;
+
+void loop() 
+{
+  
+  if(Serial.available() > 0)// Checks whether data is comming from the serial port
+  {
+    comboData = Serial.parseInt();
+
+    Serial.print("combo=");
+    Serial.println(comboData);
+    
+    
+    cm4 = comboData & mask;
+    
+    Serial.print("cm4=");
+    Serial.println(cm4);
+    comboData = comboData >> 8;
+    delay(10);
+    
+    cm3 = comboData & mask;
+    
+    Serial.print("cm3=");
+    Serial.println(cm3);
+    comboData = comboData >> 8;
+    delay(10);
+    
+    cm2 = comboData & mask;
+     
+    Serial.print("cm2=");
+    Serial.println(cm2);
+    comboData = comboData >> 8;
+    delay(10);  
+
+    cm1 = comboData & mask;
+      
+    Serial.print("cm1=");
+    Serial.println(cm1);
+    comboData = comboData >> 8;
+    delay(10);
+    
+
+    if(cm1 < 50 && cm1 > 2)
+    {
+      tone(buzz1, 1000);
+      digitalWrite(buzz1, HIGH);
+  
+    }
+    else
+    {
+      //noTone(buzz1);
+      digitalWrite(buzz1, LOW);
+   
+    }
+    delay(10);
+
+    if(cm2 < 50 && cm2 > 2)
+    {
+     //tone(buzz2, 1000);
+     digitalWrite(buzz2, HIGH);
+  
+     
+    }
+    else
+    {
+     // noTone(buzz2);
+      digitalWrite(buzz2, LOW);
+  
+    }
+   delay(10);
+    if(cm3 < 50 && cm3>2)
+    {
+      //tone(buzz3, 1000);
+      digitalWrite(buzz3, HIGH);
+   
+    }
+    else
+    {
+      noTone(buzz3);
+      digitalWrite(buzz3, LOW);
+ 
+    }
+    delay(10);
+    if(cm4 < 50 && cm4 > 2)
+    {
+      digitalWrite(buzz4, HIGH);
+
+      //tone(buzz4, 1000);
+    }
+    else
+    {
+         //noTone(buzz4);
+      digitalWrite(buzz4, LOW);
+ 
+    }
+   delay(10);
+  }
+   delay(500);
+  
+}
